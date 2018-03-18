@@ -1,7 +1,12 @@
 import React, { Component } from "react";
+import axios from "axios";
 import PageHeader from "../template/page-header"
 import TaskForm from "../tasks/taskForm";
 import TaskList from "../tasks/task-list";
+
+const URL = "http://127.0.0.1:2002/api/todos";
+
+
 export default class Tasks extends Component {
 
     constructor(props) {
@@ -14,7 +19,8 @@ export default class Tasks extends Component {
     }
 
     handleAdd() {
-        console.log("add", this);
+        const description = this.state.description;
+        axios.post(URL, { description }).then(resp => console.log("Funcionou"));
     }
 
     handleChange(event) {
