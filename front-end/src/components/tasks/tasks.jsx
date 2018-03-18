@@ -6,7 +6,6 @@ import TaskList from "../tasks/task-list";
 
 const URL = "http://127.0.0.1:2002/api/todos";
 
-
 export default class Tasks extends Component {
 
     constructor(props) {
@@ -16,11 +15,19 @@ export default class Tasks extends Component {
         }
         this.handleAdd = this.handleAdd.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.refresh();
+        this.handleRemove = this.handleRemove.bind(this);
+    }
+
+    refresh() {
+        axios.get(`${URL}?sort=-dateCreation`).then(
+            resp => this.setState({ ...this.state, description: "", list: resp.data })
+        )
     }
 
     handleAdd() {
         const description = this.state.description;
-        axios.post(URL, { description }).then(resp => console.log("Funcionou"));
+        axios.post(URL, { description }).then(resp => this.refresh())
     }
 
     handleChange(event) {
@@ -30,12 +37,16 @@ export default class Tasks extends Component {
         })
     }
 
+    handleRemove(task) {
+        axios.delete(`${URL}/${task._id}`).then(resp => this.refresh())
+    }
+
     render() {
         return (
             <div>
                 <PageHeader name="Tarefas" small="Cadastro" />
                 <TaskForm handleAdd={this.handleAdd} description={this.state.description} handleChange={this.handleChange} />
-                <TaskList />
+                <TaskList list={this.state.list} handleRemove={this.handleRemove} />
             </div>
         );
     }
