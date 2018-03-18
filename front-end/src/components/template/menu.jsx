@@ -5,7 +5,7 @@ export default props => (
         <div className="container">
             <div className="navbar-header">
                 <div className="navbar-brand" href="#">
-                    <i className="fa fa-calendar-check-o" />React App Example
+                    <i className="fa fa-calendar-check-o"></i>React App Example
                 </div>
             </div>
 
