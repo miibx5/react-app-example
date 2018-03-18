@@ -6,4 +6,4 @@ const appSchema = new mongoose.Schema({
     done: { type: Boolean, required: true, default: false },
     dateCreation: { type: Date, default: Date.now }
 });
-module.exports = restful.model("ReactAppExample", appSchema);
+module.exports = restful.model("ModelConfig", appSchema);
