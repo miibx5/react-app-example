@@ -1,9 +1,10 @@
 import React, { Component } from "react";
+import PageHeader from "../template/page-header"
 export default class Tasks extends Component {
     render() {
         return (
             <div>
-                <h1>Tarefas</h1>
+                <PageHeader name="Tarefas" small="Cadastro" />
             </div>
         );
     }
