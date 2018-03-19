@@ -19,11 +19,13 @@ export default class Tasks extends Component {
         this.handleRemove = this.handleRemove.bind(this);
         this.handleMarkAsDone = this.handleMarkAsDone.bind(this);
         this.handleMarkAsPending = this.handleMarkAsPending.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
     }
 
-    refresh() {
-        axios.get(`${URL}?sort=-dateCreation`).then(
-            resp => this.setState({ ...this.state, description: "", list: resp.data })
+    refresh(description = "") {
+        const search = description ? `&description__regex=/${description}/` : "";
+        axios.get(`${URL}?sort=-dateCreation${search}`).then(
+            resp => this.setState({ ...this.state, description, list: resp.data })
         )
     }
 
@@ -40,21 +42,25 @@ export default class Tasks extends Component {
     }
 
     handleRemove(task) {
-        axios.delete(`${URL}/${task._id}`).then(resp => this.refresh())
+        axios.delete(`${URL}/${task._id}`).then(resp => this.refresh(this.state.description))
     }
 
     handleMarkAsDone(task) {
-        axios.put(`${URL}/${task._id}`, { ...task, done: true }).then(resp => this.refresh())
+        axios.put(`${URL}/${task._id}`, { ...task, done: true }).then(resp => this.refresh(this.state.description))
     }
     handleMarkAsPending(task) {
-        axios.put(`${URL}/${task._id}`, { ...task, done: false }).then(resp => this.refresh())
+        axios.put(`${URL}/${task._id}`, { ...task, done: false }).then(resp => this.refresh(this.state.description))
+    }
+    handleSearch() {
+        this.refresh(this.state.description);
     }
 
     render() {
         return (
             <div>
                 <PageHeader name="Tarefas" small="Cadastro" />
-                <TaskForm handleAdd={this.handleAdd} description={this.state.description} handleChange={this.handleChange} />
+                <TaskForm handleAdd={this.handleAdd} description={this.state.description} handleChange={this.handleChange}
+                    handleSearch={this.handleSearch} />
                 <TaskList list={this.state.list} handleRemove={this.handleRemove}
                     handleMarkAsDone={this.handleMarkAsDone} handleMarkAsPending={this.handleMarkAsPending} />
             </div>
