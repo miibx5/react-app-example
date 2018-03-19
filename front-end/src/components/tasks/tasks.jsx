@@ -20,6 +20,8 @@ export default class Tasks extends Component {
         this.handleMarkAsDone = this.handleMarkAsDone.bind(this);
         this.handleMarkAsPending = this.handleMarkAsPending.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
+        this.handleClear = this.handleClear.bind(this);
+
     }
 
     refresh(description = "") {
@@ -55,12 +57,16 @@ export default class Tasks extends Component {
         this.refresh(this.state.description);
     }
 
+    handleClear() {
+        this.refresh();
+    }
+
     render() {
         return (
             <div>
                 <PageHeader name="Tarefas" small="Cadastro" />
                 <TaskForm handleAdd={this.handleAdd} description={this.state.description} handleChange={this.handleChange}
-                    handleSearch={this.handleSearch} />
+                    handleSearch={this.handleSearch} handleClear={this.handleClear} />
                 <TaskList list={this.state.list} handleRemove={this.handleRemove}
                     handleMarkAsDone={this.handleMarkAsDone} handleMarkAsPending={this.handleMarkAsPending} />
             </div>
